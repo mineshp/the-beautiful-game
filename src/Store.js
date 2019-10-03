@@ -1,9 +1,7 @@
 import React from 'react';
-import Routes from './Shared/Routes';
-import './App.css';
 import { StateProvider } from './State';
 
-const App = () => {
+export default function Store(props) {
   const initialState = {
     game: undefined,
     profile: undefined
@@ -14,19 +12,22 @@ const App = () => {
       case 'SET_PROFILE':
         return {
           ...state,
-          profile: action.profile
+          profile: {
+            ...action.payload
+          }
+        }
+      case 'RETRIEVE_PROFILE':
+        return {
+          profile: state.profile
         }
       default:
         return state;
     }
   }
+
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
-      <div className="App">
-        <Routes />
-      </div>
+      {props.children}
     </StateProvider>
-  );
-};
-
-export default App;
+  )
+}
